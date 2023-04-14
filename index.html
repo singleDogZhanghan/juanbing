@@ -320,7 +320,7 @@
           }
           const { name, size, taste } = this.addItem;
           const str = `${this.addItemIndex}号下单成功，${name}${size}份${taste}`;
-          window.speechSynthesis.speak(new SpeechSynthesisUtterance(str));
+          window.speechSynthesis&&window.speechSynthesis.speak(new SpeechSynthesisUtterance(str));
           const item = {
             ...this.addItem,
             index: String(this.addItemIndex++).padStart(3, "0"),
@@ -344,7 +344,7 @@
       finishOrder(item) {
         const { index } = item;
         const str = `${Number(index)}号订单已完成`;
-        window.speechSynthesis.speak(new SpeechSynthesisUtterance(str));
+        window.speechSynthesis&&window.speechSynthesis.speak(new SpeechSynthesisUtterance(str));
         this.finishedList.push(item);
         this.deleteOrder(item);
       }
