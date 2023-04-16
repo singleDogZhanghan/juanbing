@@ -22,63 +22,68 @@
 
       .container-custom {
           display: grid;
-          grid-template-columns:75px 1fr;
-          grid-template-rows:150px 1fr 90px 300px;
-          row-gap: 8px;
-          background: #f3f3f3;
-          box-sizing: border-box;
+          grid-template-columns:1fr;
+          grid-template-rows:220px 60px 40px 1fr 40px 150px;
+          row-gap: 4px;
+          background: #f8f8f8;
+          place-items: center;
+          padding: 8px;
+          box-sizing: border-box
+      }
+
+      .container-custom .goods-area {
+          border-radius: 12px;
+          background: #fff;
+          width: 100%;
+          height: 100%;
+          display: grid;
+          grid-template-columns:1fr 1fr 1fr;
+          gap: 20px
+      }
+
+      .container-custom .goods-area.moving {
+          transform: translateY(145px) scale(.01);
+          transition: all .3s ease-in-out
+      }
+
+      .container-custom .el-radio-group {
+          width: 100%;
+          height: 100%
+      }
+
+      .container-custom .el-radio-group label {
+          width: auto;
+          display: grid;
+          place-items: start center;
+          border: none !important;
+          box-shadow: none;
+          outline: 0 !important
+      }
+
+      .container-custom .el-radio-group .el-radio-button--medium .el-radio-button__inner {
+          width: 100%;
+          font-size: 32px;
+          border: none !important
       }
 
       .container-custom .el-button {
-          width: 28px;
-          height: 28px;
-          margin: 0
-      }
-
-      .container-custom .header {
-          padding: 4px 8px;
-          box-sizing: border-box;
-          background: #fff;
-          grid-column-start: span 2;
-          width: 100%;
-          height: 100%;
-          display: grid;
-          grid-template-columns:1fr 80px;
-          grid-template-rows:1fr
-      }
-
-      .container-custom .header .goods {
-          width: 100%;
-          height: 100%;
-          display: grid;
-          grid-template-rows:1fr 1fr 1fr;
-          transition: none
-      }
-
-      .container-custom .header .goods.moving {
-          transition: all .3s ease-in-out;
-          transform: translate(-110px, 100px) scale(.2)
-      }
-
-      .container-custom .header .button-area {
-          grid-template-columns:1fr;
-          grid-template-rows:1fr;
-          display: grid;
-          gap: 8px;
-          place-items: center
-      }
-
-      .container-custom .header .button-area .el-button {
-          width: 76px
+          width: 150px;
+          height: 50px;
+          margin: 0;
+          font-size: 18px;
+          font-weight: 600
       }
 
       .container-custom .title {
+          width: 100%;
           background: #fff;
-          padding: 4px 0 0 8px;
+          border-radius: 6px;
           font-size: 15px;
           line-height: 28px;
           font-weight: 600;
-          text-align: center
+          text-align: left;
+          padding: 6px;
+          box-sizing: border-box
       }
 
       .container-custom .title.current {
@@ -100,14 +105,20 @@
       }
 
       .container-custom .list .item {
-          height: 32px;
+          height: 48px;
           display: grid;
-          grid-template-columns:1fr 50px 20px 30px 60px 28px 28px;
-          -moz-column-gap: 8px;
-          column-gap: 8px;
-          font-size: 14px;
+          grid-template-columns:60px 120px 50px 70px 50px;
+          -moz-column-gap: 4px;
+          column-gap: 4px;
+          font-size: 28px;
           place-items: center;
-          margin-bottom: 4px
+          margin-bottom: 4px;
+          transform: scale(.8)
+      }
+
+      .container-custom .list .item .el-button {
+          width: 38px;
+          height: 38px
       }
 
       .container-custom .list.current {
@@ -115,8 +126,8 @@
       }
 
       .container-custom .list.current .item:first-child {
-          background: hsla(0, 7%, 65%, .2);
-          color: #ec5c5c
+          color: red;
+          transform: scale(1)
       }
 
       .container-custom .list.recent {
@@ -135,45 +146,47 @@
   new window.Vue({
     template: `
       <div class="container-custom">
-      <div class="header">
-        <div class="goods" ref="goods">
-          <el-radio-group v-model="addItem.name" size="medium">
-            <el-radio-button
-              v-for="item in goodList"
-              :label="item.name"
-              :key="item.name"
-            />
-          </el-radio-group>
 
-          <el-radio-group v-model="addItem.size" size="medium">
-            <el-radio-button
-              v-for="item in goodList.find((e) => e.name === addItem.name)
-              .sizeList"
-              :label="item"
-              :key="item"
-            />
-          </el-radio-group>
+      <div class="goods-area" ref="goods">
+        <el-radio-group v-model="addItem.name" size="medium">
+          <el-radio-button
+            v-for="item in goodList"
+            :label="item.name"
+            :key="item.name"
+          />
+        </el-radio-group>
 
-          <el-radio-group v-model="addItem.taste" size="medium">
-            <el-radio-button
-              v-for="item in goodList.find((e) => e.name === addItem.name)
-              .tasteList"
-              :label="item"
-              :key="item"
-            />
-          </el-radio-group>
-        </div>
 
-        <div class="button-area">
-          <el-button size="mini" type="primary" round @click="addOrder">
-            下单 {{ String(addItemIndex).padStart(3, "0") }}
-          </el-button>
-        </div>
+        <el-radio-group v-model="addItem.size" size="medium">
+          <el-radio-button
+            v-for="item in goodList.find((e) => e.name === addItem.name)
+                  .sizeList"
+            :label="item"
+            :key="item"
+          />
+        </el-radio-group>
+
+        <el-radio-group v-model="addItem.taste" size="medium">
+          <el-radio-button
+            v-for="item in goodList.find((e) => e.name === addItem.name)
+                  .tasteList"
+            :label="item"
+            :key="item"
+          />
+        </el-radio-group>
+
+
       </div>
 
-      <span class="title current"
-      ><i class="el-icon-bell" />({{ currentList.length }})<br />待处理</span
-      >
+
+      <el-button size="mini" type="warning" @click="addOrder">
+        下单 {{ String(addItemIndex).padStart(3, "0") }}
+      </el-button>
+
+      <span class="title current">
+      <i class="el-icon-bell" />
+      待处理({{ currentList.length }})
+    </span>
       <div class="list current">
         <div
           class="item"
@@ -184,7 +197,6 @@
           <span>{{ item.name }}</span>
           <span>{{ item.size }}</span>
           <span>{{ item.taste }}</span>
-          <span>{{ item.time }}</span>
           <el-button
             size="mini"
             type="primary"
@@ -192,44 +204,14 @@
             circle
             @click="finishOrder(item)"
           />
-          <el-button
-            size="mini"
-            type="danger"
-            icon="el-icon-delete"
-            circle
-            @click="deleteOrder(item)"
-          />
         </div>
       </div>
 
-      <span class="title"><i class="el-icon-shopping-cart-2" />新订单</span>
-      <div class="list recent">
-        <div
-          class="item"
-          v-for="(item, index) in recentAddList"
-          :key="index + 'recent'"
-        >
-          <span>{{ item.index }}</span>
-          <span>{{ item.name }}</span>
-          <span>{{ item.size }}</span>
-          <span>{{ item.taste }}</span>
-          <span>{{ item.time }}</span>
-          <span />
-          <el-button
-            size="mini"
-            type="danger"
-            icon="el-icon-delete"
-            circle
-            @click="deleteOrder(item)"
-          />
-        </div>
-      </div>
+      <span class="title">
+      <i class="el-icon-hot-water" />
+      已完成({{ reversedFinishedList.length }})
+    </span>
 
-      <span class="title"
-      ><i class="el-icon-hot-water" />({{
-          reversedFinishedList.length
-        }})<br />已完成</span
-      >
       <div class="list finished">
         <div
           class="item"
@@ -240,13 +222,19 @@
           <span>{{ item.name }}</span>
           <span>{{ item.size }}</span>
           <span>{{ item.taste }}</span>
-          <span>{{ item.time }}</span>
         </div>
       </div>
       </div>`,
     name: "CheckPlanView",
     data() {
+      const date = new Date();
+      const storageKey = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
+      if (!localStorage.getItem(storageKey)) {
+        localStorage.clear();
+      }
+      const { currentList = [], finishedList = [] } = JSON.parse(localStorage.getItem(storageKey) || "{}");
       return {
+        storageKey,
         goodList: [
           {
             name: "卷饼",
@@ -281,13 +269,8 @@
             tasteList: ["不辣", "微辣", "中辣", "特辣"]
           }
         ],
-        finishedList: [
-          // 所有已完成
-          // { name: '卷饼', size: '大', taste: '微辣', time: '15:39:19' },
-        ],
-        currentList: [
-          // { name: '卷饼', size: '大', taste: '微辣', time: '15:39:19' },
-        ], // 当前剩余
+        finishedList,// { name: '卷饼', size: '大', taste: '微辣', time: '15:39:19' }
+        currentList, // 当前剩余
         recentAddList: [
           // { name: '卷饼', size: '大', taste: '微辣', time: '15:39:19' },
         ], // 最近添加
@@ -299,7 +282,7 @@
           taste: "微辣",
           time: ""
         }, // 添加订单
-        addItemIndex: 1
+        addItemIndex: currentList.length + finishedList.length + 1
       };
     },
     computed: {
@@ -307,10 +290,31 @@
         return [...this.finishedList].reverse();
       }
     },
+    watch: {
+      currentList: {
+        handler() {
+          this.updateStorage();
+        },
+        deep: true
+      },
+      finishedList: {
+        handler() {
+          this.updateStorage();
+        },
+        deep: true
+      }
+    },
     created() {
       window.test = this;
     },
     methods: {
+      updateStorage() {
+        const data = JSON.stringify({
+          currentList: this.currentList,
+          finishedList: this.finishedList
+        });
+        localStorage.setItem(this.storageKey, data);
+      },
       addOrder() {
         const date = new Date();
         this.$refs.goods.classList.add("moving");
@@ -320,7 +324,7 @@
           }
           const { name, size, taste } = this.addItem;
           const str = `${this.addItemIndex}号下单成功，${name}${size}份${taste}`;
-          window.speechSynthesis&&window.speechSynthesis.speak(new SpeechSynthesisUtterance(str));
+          window.speechSynthesis && window.speechSynthesis.speak(new SpeechSynthesisUtterance(str));
           const item = {
             ...this.addItem,
             index: String(this.addItemIndex++).padStart(3, "0"),
@@ -344,7 +348,7 @@
       finishOrder(item) {
         const { index } = item;
         const str = `${Number(index)}号订单已完成`;
-        window.speechSynthesis&&window.speechSynthesis.speak(new SpeechSynthesisUtterance(str));
+        window.speechSynthesis && window.speechSynthesis.speak(new SpeechSynthesisUtterance(str));
         this.finishedList.push(item);
         this.deleteOrder(item);
       }
